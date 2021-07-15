@@ -1,0 +1,11 @@
+{% extends 'Base.html' %}
+
+{% block content %}>
+<div class="row">
+  <h3>Результаты запроса</h3>
+  <h4>Количество предложений: {{ num_offer }}</h4>
+  {% for flat in flats %}
+    <a href={{ flat.link }} target="_blank">{{ flat.link }}</a><br>
+</div>
+{% endfor %}
+{% endblock %}

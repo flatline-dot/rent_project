@@ -71,4 +71,4 @@ def data_save_db(csv_data):
 if __name__ == '__main__':
     app = create_app()
     with app.app_context():
-        data_save_db(read_csv('data_cian.csv'))
+        data_save_db(read_csv('domofond_data.csv'))

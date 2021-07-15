@@ -4,3 +4,4 @@ env
 *.bat
 *.csv
 *.txt
+*.json
