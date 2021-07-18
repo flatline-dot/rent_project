@@ -1,4 +1,4 @@
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy, orm
 
 db = SQLAlchemy()
 
@@ -8,6 +8,7 @@ class Location(db.Model):
     metro = db.Column(db.String)
     district = db.Column(db.String)
     street = db.Column(db.String)
+    flat = orm.relationship('Flat')
 
     def __repr__(self):
         return f'''metro = {self.metro},
@@ -20,6 +21,7 @@ class Payment(db.Model):
     price = db.Column(db.Integer)
     commission = db.Column(db.Integer)
     deposit = db.Column(db.Integer)
+    flat = orm.relationship('Flat')
 
     def __repr__(self):
         return f'''price = {self.price},
@@ -46,6 +48,8 @@ class Flat(db.Model):
     link = db.Column(db.String, unique=True)
     area = db.Column(db.Integer)
     material = db.Column(db.Integer)
+    payment = orm.relationship('Payment', lazy='joined')
+    location = orm.relationship('Location', lazy='joined')
 
     def __repr__(self):
         return f'<Flat id={self.id}, link={self.link}>'
