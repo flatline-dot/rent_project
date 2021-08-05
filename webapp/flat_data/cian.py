@@ -1,34 +1,5 @@
-from random import choice
-import csv
-import time
-import requests
-
 from bs4 import BeautifulSoup
-from fake_useragent import UserAgent
-
-
-def read_proxies():
-    with open('list_proxies.txt', 'r', newline='', encoding='utf=8') as f:
-        proxy = []
-        for line in f.readlines():
-            proxy.append(line.strip())
-        return proxy
-
-
-def read_list_links():
-    with open('list_links_cian.csv', newline='', encoding='utf-8') as f:
-        reads = f.read().split()
-        return reads
-
-
-def write_csv(result):
-    with open('data_cian.csv', 'a', newline='', encoding='utf=8') as f:
-        fieldnames = [
-            'num_rooms', 'floor', 'material', 'metro', 'district',
-            'street', 'area', 'price', 'comission', 'deposit', 'link'
-        ]
-        writer = csv.DictWriter(f, fieldnames=fieldnames, delimiter=';')
-        writer.writerow(result)
+from flat_data.utils import reader_csv, writer_csv, read_proxies, get_html
 
 
 def deposit_check(deposit):
@@ -37,10 +8,9 @@ def deposit_check(deposit):
 
 
 def commission_check(commission):
-    new_commission = commission.split(',')[1]
-    if new_commission.isdigit():
-        new_commission.replace('%', '')
-        return new_commission
+    new_commission = commission.split(',')[1].split()[1]
+    if '%' in new_commission:
+        return new_commission.replace('%', '')
     else:
         return 0
 
@@ -56,20 +26,17 @@ def material_check(material):
         return False
 
 
-def get_html(link, proxies):
-    time.sleep(1)
-    ua = UserAgent()
-    headers = {'UserAgent': ua.random}
-    proxy = {'http': 'http://' + choice(proxies)}
-    html = requests.get(link, headers=headers, proxies=proxy)
-    result = html.text
-    return result
+def area_check(area):
+    if ',' in area:
+        return area.replace(',', '.')
+    else:
+        return area
 
 
 def get_data(html, link):
     soup = BeautifulSoup(html, 'html.parser')
     rooms = soup.find('div', class_='a10a3f92e9--container--fX4cE').find('h1', class_='a10a3f92e9--title--2Widg').text[0]
-    area = soup.find('div', class_='a10a3f92e9--container--fX4cE').find('h1', class_='a10a3f92e9--title--2Widg').text.split()[2]
+    area = area_check(soup.find('div', class_='a10a3f92e9--container--fX4cE').find('h1', class_='a10a3f92e9--title--2Widg').text.split()[2])
     district = soup.find('div', class_='a10a3f92e9--geo--18qoo').find('address', class_='a10a3f92e9--address--140Ec').find_all('a', class_='a10a3f92e9--link--1t8n1 a10a3f92e9--address-item--1clHr')[2].text
     district = district.split('р-н')[1].replace(' ', '')
     metro = soup.find('a', class_='a10a3f92e9--underground_link--AzxRC').text
@@ -83,6 +50,7 @@ def get_data(html, link):
     commission = soup.find('div', class_='a10a3f92e9--info-container--3JwEv').find('p', class_='a10a3f92e9--description--2xRVn').text
     commission = commission.split('\xa0')
     commission = ' '.join(commission)
+
     data = {
         'link': link,
         'num_rooms': rooms,
@@ -96,12 +64,13 @@ def get_data(html, link):
         'comission': commission_check(commission),
         'deposit': deposit_check(commission)
     }
+    print(data)
     if data['material']:
-        write_csv(data)
+        writer_csv(data)
 
 
 def main():
-    links = read_list_links()
+    links = reader_csv('cian_links.csv')
     proxies = read_proxies()
     for link in links:
         try:

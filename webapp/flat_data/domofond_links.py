@@ -4,6 +4,7 @@ import requests
 
 from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
+from config import domofond_url
 
 
 def get_html(url):
@@ -31,8 +32,7 @@ def get_links(html):
 
 def main():
     for page in range(1, 150):
-        url = f'''https://www.domofond.ru/arenda-kvartiry-moskva-c3584?
-                  RentalRate=Month&PublicationTimeRange=OneWeek&Page={page}'''
+        url = domofond_url
         time.sleep(1)
         try:
             html = get_html(url)

@@ -1,34 +1,7 @@
 import re
-import csv
-import time
-import requests
 
 from bs4 import BeautifulSoup
-from fake_useragent import UserAgent
-
-
-def read_csv():
-    with open('links_list_domofond.csv', 'r') as f:
-        links = f.read().split()
-        return links
-
-
-def csv_writer(data):
-    with open('domofond_data.csv', 'a', newline='', encoding='utf=8') as f:
-        fieldnames = [
-            'num_rooms', 'floor', 'material', 'metro', 'district',
-            'street', 'area', 'price', 'commission', 'deposit', 'link'
-        ]
-
-        writer = csv.DictWriter(f, fieldnames=fieldnames, delimiter=';')
-        writer.writerow(data)
-
-
-def get_html(url):
-    ua = UserAgent()
-    headers = {'UserAgent': ua.random}
-    html = requests.get(url, headers=headers)
-    return html.text
+from flat_data.utils import reader_csv, writer_csv, get_html, read_proxies
 
 
 def commission_check(commission):
@@ -93,13 +66,13 @@ def get_data(html, link):
             'link': link
             }
     if data['material']:
-        csv_writer(data)
+        writer_csv(data)
 
 
 def main():
-    links = read_csv()
+    proxies = read_proxies()
+    links = reader_csv('domofond_links.csv')
     for link in links:
-        time.sleep(1)
         try:
             html = get_html(link)
             get_data(html, link)
