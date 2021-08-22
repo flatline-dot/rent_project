@@ -5,13 +5,20 @@ import time
 from random import choice
 
 
-def reader_csv(file):
+def write_links_csv(links, file_name):
+    with open(file_name, 'a', newline='') as f:
+        writer = csv.writer(f)
+        for item in links:
+            writer.writerow([item])
+
+
+def read_links_csv(file):
     with open(file, 'r') as f:
         links = f.read().split()
         return links
 
 
-def writer_csv(data, file):
+def write_data_csv(data, file):
     with open(file, 'a', newline='', encoding='utf=8') as f:
         fieldnames = [
             'num_rooms', 'floor', 'material', 'metro', 'district',
