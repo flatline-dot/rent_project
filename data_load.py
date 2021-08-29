@@ -22,21 +22,14 @@ def read_csv(fieldname):
 
 
 def data_save_db(csv_data):
-    BRICK, MONOLITE, PANEL = range(1, 4)
-
-    MATERIALS_NAMES = {
-        BRICK: 'Кирпич',
-        MONOLITE: 'Монолит',
-        PANEL: 'Панель',
-    }
     for row in csv_data:
         try:
             flat = Flat(
                 num_rooms = int(row['num_rooms']),
                 floor = int(row['floor']),
                 link = row['link'],
-                area = (row['area']), 
-                #material = MATERIALS_NAMES[row['material']],
+                area = int(row['area']), 
+                material = row['material'],
                 metro = row['metro'],
                 district = row['district'],
                 street = row['street'],
@@ -56,4 +49,4 @@ def main(file):
         data_save_db(read_csv(file))
 
 if __name__=='__main__':
-    main('C:\\project\\rent_project\\webapp\\flat_data\\data_cian.csv')
+    main()
