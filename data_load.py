@@ -20,15 +20,8 @@ def read_csv(fieldname):
         print(data)
         return data[1:]  # возвращ. список, где каждый элем. это строка с ключ-значен.из fields
 
-# def studio_check(num_rooms):
-#     if int(num_rooms) == 0:
-#         return True
-#     else:
-#         return False
-
 
 def data_save_db(csv_data):
-    #print(csv_data)
     BRICK, MONOLITE, PANEL = range(1, 4)
 
     MATERIALS_NAMES = {
