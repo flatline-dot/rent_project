@@ -1,7 +1,9 @@
 import csv
+import time
+import traceback
 from fake_useragent import UserAgent
 import requests
-import time
+
 from random import choice
 
 
@@ -30,13 +32,16 @@ def write_data_csv(data, file):
 
 
 def get_html(link, proxies):
-    time.sleep(1)
-    ua = UserAgent()
-    headers = {'UserAgent': ua.random}
-    proxy = {'http': 'http://' + choice(proxies)}
-    html = requests.get(link, headers=headers, proxies=proxy)
-    result = html.text
-    return result
+    try:
+        time.sleep(choice(3))
+        ua = UserAgent()
+        headers = {'UserAgent': ua.random}
+        proxy = {'http': 'http://' + choice(proxies)}
+        html = requests.get(link, headers=headers, proxies=proxy)
+        result = html.text
+        return result
+    except Exception as err:
+        print(err, traceback)
 
 
 def read_proxies():
@@ -45,3 +50,14 @@ def read_proxies():
         for line in f.readlines():
             proxy.append(line.strip())
         return proxy
+
+
+def all_links(proxy, num_pages, url, get_link):                        # get ads links and write on csv
+    for page in range(num_pages):
+        print(url + f'{page}')
+        try:
+            html = get_html(url + '?p={page}', proxy)
+            get_link(html)
+            print('Страница', page)
+        except Exception as err:
+            print(err, url)
