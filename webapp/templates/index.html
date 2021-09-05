@@ -1,7 +1,7 @@
 {% extends 'Base.html' %}
 {% block content %}>
-
 <div class="container-sm">
+  <h4>Аренда квартир в Москве</h4><br>
   <div class="h-100 p-5 bg-light border rounded-3">
     <form action="{{ url_for('ads.result') }}" method="POST">
       <div class='row '>
@@ -45,7 +45,7 @@
 <div class="container-sm">
   <div class="col-8">
     <h5>Результаты запроса:</h5><br>
-    {% for flat in flats %}
+    {% for flat in flats.items %}
       <div class="h-100 p-5 bg-light border rounded-3">
         <div class="container-sm">
           <div class="row">
@@ -72,9 +72,27 @@
           </div>
         </div>
       </div>
-    {% endfor %}
-
+    {% endfor %}<br>
+    <nav aria-label="...">
+      <ul class="pagination">
+        <li class="page-item {% if not flats.has_prev %} disabled {% endif %}">
+          <a class="page-link" href="http://127.0.0.1:5000/{{ url_for(request.endpoint) }}?page={{ flats.prev_num }}">Назад</a>
+        </li>
+    
+        {% for flat in flats.iter_pages() %}
+          {% if flat %}
+            <li class="page-item {% if flat == flats.page %} active {% endif %}">
+              <a class="page-link" href="http://127.0.0.1:5000/{{ url_for(request.endpoint) }}?page={{ flat }}">{{ flat }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+        
+        <li class="page-item {% if not flats.has_next %} disabled {% endif %}">
+          <a class="page-link" href="http://127.0.0.1:5000/{{ url_for(request.endpoint) }}?page={{ flats.next_num }}">Вперед</a>
+        </li>
+      </ul>
+    </nav>
   </div>
 </div>
-     
+
 {% endblock %}
