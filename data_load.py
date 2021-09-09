@@ -1,4 +1,5 @@
 import csv
+#from datetime import datetime
 
 from webapp.model import db, Flat
 from webapp import create_app
@@ -35,7 +36,7 @@ def data_save_db(csv_data):
                 street = row['street'],
                 price = int(row['price']),
                 commission = int(row['commission']),
-                deposit = int(row['deposit'])
+                deposit = int(row['deposit']),
             )
             db.session.add(flat)
             db.session.commit()
@@ -49,4 +50,4 @@ def main(file):
         data_save_db(read_csv(file))
 
 if __name__=='__main__':
-    main()
+    main('webapp\\flat_data\\data_cian.csv')
