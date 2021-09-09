@@ -22,12 +22,12 @@ def write_data_csv(data, file):
     with open(file, 'a', newline='', encoding='utf=8') as f:
         fieldnames = [
             'num_rooms', 'floor', 'material', 'metro', 'district',
-            'street', 'area', 'price', 'commission', 'deposit', 'link'
+            'street', 'area', 'price', 'commission', 'deposit', 'link', 'date'
         ]
 
         writer = csv.DictWriter(f, fieldnames=fieldnames, delimiter=';')
         writer.writerow(data)
-
+        return writer
 
 def get_html(link, proxies):
     time.sleep(1)
