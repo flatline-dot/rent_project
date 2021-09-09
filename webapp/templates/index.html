@@ -1,5 +1,14 @@
 {% extends 'Base.html' %}
 {% block content %}>
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="alert alert-warning" role="alert">
+        {% for message in messages %}
+            {{ message }}<br>
+        {% endfor %}
+    </div>
+    {% endif %}
+{% endwith %}
 <div class="container-sm">
   <h4>Аренда квартир в Москве</h4><br>
   <div class="h-100 p-5 bg-light border rounded-3">
