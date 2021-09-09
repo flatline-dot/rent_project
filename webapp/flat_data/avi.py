@@ -1,5 +1,4 @@
-from utils import get_html, read_proxies, write_links_csv, read_links_csv, write_data_csv
-import config
+from utils import get_html, read_proxies, write_links_csv, read_links_csv, write_data_csv, all_links
 from bs4 import BeautifulSoup
 import traceback
 
@@ -7,21 +6,11 @@ import traceback
 def get_link(html):
     links = []
     soup = BeautifulSoup(html, 'html.parser')
-    data = soup.find('div', class_='items-items-38oUm').find_all('div', class_='iva-item-root-G3n7v photo-slider-slider-3tEix iva-item-list-2_PpT iva-item-redesign-1OBTh iva-item-responsive-1z8BG items-item-1Hoqq items-listItem-11orH js-catalog-item-enum')
+    data = soup.find('div', class_='items-items-kAJAg').find_all('div', class_='iva-item-root-Nj_hb photo-slider-slider-_PvpN iva-item-list-H_dpX iva-item-redesign-nV4C4 iva-item-responsive-gIKjW items-item-My3ih items-listItem-Gd1jN js-catalog-item-enum')
     for element in data:
-        link = 'https://www.avito.ru/' + element.find('a', class_='iva-item-sliderLink-2hFV_').get('href')
+        link = 'https://www.avito.ru/' + element.find('a', class_='iva-item-sliderLink-bJ9Pv').get('href')
         links.append(link)
     write_links_csv(links, 'avito_links.csv')
-
-
-def all_links(proxy):                        # get ads links and write on csv
-    for page in range(50):
-        try:
-            html = get_html(config.avito_url, proxy)
-            get_link(html)
-            print('Страница', page)
-        except Exception as err:
-            print(err, '({page})')
 
 
 def get_data(links, proxy):
@@ -97,7 +86,7 @@ def get_data(links, proxy):
 
 def main():
     proxy = read_proxies()
-    all_links(proxy)
+    all_links(proxy, 50, f'https://www.avito.ru/moskva/kvartiry/sdam/na_dlitelnyy_srok-ASgBAgICAkSSA8gQ8AeQUg?p=', get_link)
     links = read_links_csv('avito_links.csv')
     get_data(links, proxy)
 
