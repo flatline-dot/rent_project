@@ -93,7 +93,7 @@ def get_data(links, proxy):
 
 def main():
     proxy = read_proxies()
-    all_links(proxy, 70, f'https://www.domofond.ru/arenda-kvartiry-moskva-c3584?RentalRate=Month&PublicationTimeRange=OneWeek&Page=', get_link)
+    #all_links(proxy, 80, f'https://www.domofond.ru/arenda-kvartiry-moskva-c3584?RentalRate=Month&PublicationTimeRange=OneWeek&Page=', get_link)
     links = read_links_csv('domofond_links.csv')
     get_data(links, proxy)
 

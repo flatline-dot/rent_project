@@ -17,7 +17,9 @@
 
         {{ form.password.label }}<br>
         {{ form.password() }}<br>
-        {{ form.submit() }}
+        {{ form.submit() }}<br>
+        {{ form.remember_me() }}
+        {{ form.remember_me.label }}
     </form>
 </div>
 {% endblock %}
