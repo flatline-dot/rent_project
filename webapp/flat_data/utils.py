@@ -33,7 +33,7 @@ def write_data_csv(data, file):
 
 def get_html(link, proxies):
     try:
-        time.sleep(randint(1, 3))
+        time.sleep(randint(1, 10))
         ua = UserAgent()
         headers = {'UserAgent': ua.random}
         proxy = {'http': 'http://' + choice(proxies)}
