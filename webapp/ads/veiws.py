@@ -1,12 +1,13 @@
 from flask import Blueprint, render_template, request
 from webapp.model import Flat
 from webapp.ads.forms import FilterForm
-
+from flask_login import current_user
 
 blueprint = Blueprint('ads', __name__)
 
 
 @blueprint.route('/index', methods=["GET"])
+@blueprint.route('/', methods=["GET"])
 def index():
     form = FilterForm()
     if request.args.get('page'):
