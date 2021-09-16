@@ -1,7 +1,6 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, redirect, url_for,  request
 from webapp.model import Flat
 from webapp.ads.forms import FilterForm
-from flask_login import current_user
 
 blueprint = Blueprint('ads', __name__)
 
@@ -14,11 +13,12 @@ def index():
         page = int(request.args.get('page'))
     else:
         page = 1
+    flats_count = Flat.query.count()
     query = Flat.query.paginate(page=page, per_page=25)
-    return render_template('index.html', flats=query, form=form)
+    return render_template('index.html', flats=query, form=form, flats_count=flats_count)
 
 
-@blueprint.route('/result', methods=["POST", "GET"])
+@blueprint.route('/result', methods=["POST"])
 def result():
     form = FilterForm(request.form)
     query = Flat.query
@@ -46,6 +46,12 @@ def result():
             query = query.filter(Flat.commission == 0)
         if form.deposit.data:
             query = query.filter(Flat.deposit == 0)
-
+    
+    flats_count = query.count()
     query = query.paginate(page=page, per_page=25)
-    return render_template('index.html', flats=query, form=form)
+    return render_template('index.html', flats=query, form=form, flats_count=flats_count)
+
+
+@blueprint.route('/reset', methods=["POST"])
+def reset():
+    return redirect(url_for('ads.index'))
