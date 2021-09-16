@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, flash
-from flask_login import login_user, logout_user, current_user
+from flask_login import login_user, logout_user, current_user, login_required
 from webapp.user.form import LoginForm, RegistrationForm
+from webapp.ads.forms import UserAd
 from webapp.model import db, User
 
 
@@ -36,7 +37,7 @@ def logout():
 
 
 @blueprint.route('/registration')
-def registation():
+def registration():
     if current_user.is_authenticated:
         return redirect(url_for('ads.index'))
     form = RegistrationForm()
@@ -55,3 +56,15 @@ def process_registration():
         return redirect(url_for('user.login'))
     flash('Пожалуйста исправьте ошибки в форме')
     return redirect(url_for('user.registration'))
+
+
+@blueprint.route('/user')
+@login_required
+def user():
+    form = UserAd()
+    return render_template('user/new_ad.html', form=form)
+
+
+@blueprint.route('/process_add', methods=["POST"])
+def process_add():
+    return 'ok'

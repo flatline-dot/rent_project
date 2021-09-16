@@ -1,65 +1,118 @@
 {% extends 'Base.html' %}
 {% block content %}>
-{% with messages = get_flashed_messages() %}
-    {% if messages %}
-    <div class="alert alert-warning" role="alert">
-        {% for message in messages %}
-            {{ message }}<br>
-        {% endfor %}
-    </div>
+<div class="container">
+  <ul class="nav justify-content-end">
+    
+    {% if current_user.is_authenticated %}
+    <li class="nav-item">
+      <div class="nav-link disabled">Привет, {{ current_user.username }}!</div>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" aria-current="page" href={{ url_for('user.user') }}>Разместить объявление</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" aria-current="page" href={{ url_for('user.logout') }}>Выйти</a>
+    </li>
+    
+    {% else %}
+    <li class="nav-item">
+      <a class="nav-link active" aria-current="page" href={{ url_for('user.user') }}>Разместить объявление</a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href={{ url_for('user.login') }}>Войти</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" aria-current="page" href={{ url_for('user.registration') }}>Регистрация</a>
+    </li>
     {% endif %}
-{% endwith %}
+  </ul>
+</div>
+
+
+
 <div class="container-sm">
-  <h4>Аренда квартир в Москве</h4><br>
-  <div class="h-100 p-5 bg-light border rounded-3">
-    <form action="{{ url_for('ads.result') }}" method="POST">
-      <div class='row '>
-        <div class='col-4'>
-          <div class="input-group input-group-sm mb-3">
-            <span class="input-group-text">Цена</span>
-            {{ form.hidden_tag() }}
-            {{ form.price_min(type='number', placeholder="От") }}
-            {{ form.price_max(type='number', placeholder="До") }}
+  <div class='col-4'>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <div class="alert alert-warning" role="alert">
+          {% for message in messages %}
+              {{ message }}<br>
+          {% endfor %}
+      </div>
+      {% endif %}
+    {% endwith %}
+  </div>
+</div>
+
+
+<div class="container-sm">
+  <div class='col-10 justify-content-center'>
+    <h4>Аренда квартир в Москве</h4><br>
+    <div class="h-100 p-5 bg-light border rounded-3">
+      <form action="{{ url_for('ads.result') }}" method="POST">
+        <div class='row justify-content-center'>
+          <div class='col-4'>
+            <div class="input-group input-group-sm mb-3">
+              <span class="input-group-text">Цена</span>
+              {{ form.hidden_tag() }}
+              {{ form.price_min(type='number', placeholder="От") }}
+              {{ form.price_max(type='number', placeholder="До") }}
+            </div>
+            
+            <h7>Количество комнат:</h7><br><br>
+            {% for i in form.rooms %}
+            <div class="form-check form-check-inline">
+              {{ i(class="form-check-input") }}{{ i.label(class="form-check-label") }}
+            </div>
+            {% endfor %}<br><br>
+            {{ form.commission(class="form-check-input") }} {{ form.commission.label }}<br>
+            {{ form.deposit(class="form-check-input") }} {{ form.deposit.label }}<br><br>
+            <input class="btn btn-warning btn-sm" type="submit" value="Поиск">
+            
           </div>
           
-          <h7>Количество комнат:</h7><br><br>
-          {% for i in form.rooms %}
-            {{ i }}
-            {{ i.label }}<br>
-          {% endfor %}<br>
-        </div>
+          <div class='col-4'>
+            <div class="input-group input-group-sm mb-3">
+              <span class="input-group-text">Площаль</span>
+                {{ form.area_min(type='number', placeholder="От")}}
+                {{ form.area_max(type='number', placeholder="До") }}
+            </div>
+            <h7>Тип дома:</h7><br><br>
+            {% for i in form.material %}
+            <div class="form-check form-check-inline">
+              {{ i(class="form-check-input") }}
+              {{ i.label }}<br>
+            </div>
+            {% endfor %}<br>
+          
+            
+          </form><br><br><br>
+            <form action="{{ url_for('ads.reset') }}" method="POST">
+              <input class="btn btn-warning btn-sm" type="submit" value="Сбросить все" {% if url_for(request.endpoint)  != '/result' %} disabled {% endif %}><br>
+            </form>
+          </div>
+        </div><br>
+        
       
-        <div class='col-4'>
-          <div class="input-group input-group-sm mb-3">
-            <span class="input-group-text">Площаль</span>
-              {{ form.area_min(type='number', placeholder="От")}}
-              {{ form.area_max(type='number', placeholder="До") }}
-          </div>
-          <h7>Тип дома:</h7><br><br>
-          {% for i in form.material %}
-            {{ i }}
-            {{ i.label }}<br>
-          {% endfor %}<br>
-          <div class="form-check">
-            {{ form.commission() }} {{ form.commission.label }}<br>
-            {{ form.deposit() }} {{ form.deposit.label }}<br>
-          </div>
-        </div>
-      </div>
-      <input type="submit" value="Применить фильтр">
-    </form>
+      
+    </div>
   </div>
 </div><br><br>
-          
+
+
 <div class="container-sm">
   <div class="col-8">
-    <h5>Результаты запроса:</h5><br>
+    <h6>Предложений: {{ flats_count }}</h6><br>
     {% for flat in flats.items %}
       <div class="h-100 p-5 bg-light border rounded-3">
         <div class="container-sm">
           <div class="row">
             <div class="col">
-              <a href={{ flat.link }} target="_blank">{{ flat.num_rooms }}-комнатная квартира {{ flat.area}} м²</a><br>
+              {% if flat.num_rooms == 0%}
+              <h6>Квартира-студия, {{ flat.area}} м²</h6><br>
+              {% else %}
+              <h6>{{ flat.num_rooms }}-комнатная квартира, {{ flat.area}} м²</h6><br>
+              {% endif %}
               <h7>{{ flat.street }}</h7><br>
               <h7>м. {{ flat.metro }}</h7>
             </div>
@@ -76,11 +129,11 @@
                 <h7>Комиссия {{ flat.commission }} %</h7><br>
               {% endif %}
               <h1></h1>
-              <a href={{ flat.link }} button type="button" target="_blank" class="btn btn-primary btn-sm">Перейти к объявлению</a><br>
+              <a href={{ flat.link }} button type="button" target="_blank" class="btn btn-warning btn-sm">Перейти к объявлению</a><br>
             </div>
           </div>
         </div>
-      </div>
+      </div><br>
     {% endfor %}<br>
     <nav aria-label="...">
       <ul class="pagination">
@@ -100,7 +153,7 @@
           <a class="page-link" href="http://127.0.0.1:5000/{{ url_for(request.endpoint) }}?page={{ flats.next_num }}">Вперед</a>
         </li>
       </ul>
-    </nav>
+    </nav><br>
   </div>
 </div>
 

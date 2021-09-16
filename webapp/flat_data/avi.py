@@ -86,7 +86,7 @@ def get_data(links, proxy):
 
 def main():
     proxy = read_proxies()
-    all_links(proxy, 50, f'https://www.avito.ru/moskva/kvartiry/sdam/na_dlitelnyy_srok-ASgBAgICAkSSA8gQ8AeQUg?p=', get_link)
+    #all_links(proxy, 50, f'https://www.avito.ru/moskva/kvartiry/sdam/na_dlitelnyy_srok-ASgBAgICAkSSA8gQ8AeQUg?p=', get_link)
     links = read_links_csv('avito_links.csv')
     get_data(links, proxy)
 

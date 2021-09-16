@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container-sm">
+    <h4></h4><br>
+    <h4>О квартире</h4><br>
+    <div class='row'>
+    <div class='col-4'>
+        <form action={{ url_for('user.process_add') }} method="POST">
+            {{ form.hidden_tag() }}
+            {% for i in form.rooms %}
+                <div class="form-check form-check-inline">
+                    {{ i(class="form-check-input") }}{{ i.label(class="form-check-label") }}<br>
+                </div>
+            {% endfor %}<br><br>
+            <span>Тип дома:</span><br><br>
+            {% for i in form.material %}
+                <div class="form-check form-check-inline">
+                    {{ i(class="form-check-input") }}{{ i.label(class="form-check-label") }}<br>
+                </div>
+            {% endfor %}<br><br>
+            {{ form.adress.label }}
+            <div class="input-group mb-3">
+                {{ form.adress() }} 
+            </div>
+            {{ form.metro.label }}
+            <div class="input-group mb-3">
+                {{ form.metro() }}
+             </div>
+            {{ form.price.label }}
+            <div class="input-group mb-3">
+                {{ form.price() }}
+                <span class="input-group-text">₽</span>
+            </div>
+            {{ form.area.label }}
+            <div class="input-group mb-3">
+                {{ form.area() }}
+                <span class="input-group-text">м²</span>
+            </div>
+            {{ 'Коммиссия' }}
+            <div class="input-group mb-3">
+                {{ form.commission() }}
+                <span class="input-group-text">%</span>
+            </div>
+            {{ form.deposit.label }}
+            <div class="input-group mb-3">
+               {{ form.deposit() }}
+               <span class="input-group-text">₽</span>
+            </div>
+            
+            
+            
+            {{ form.phone.label }}
+            <div class="input-group mb-3">
+
+                {{ form.phone() }}
+                
+                 
+             </div><br>
+             <input class="btn btn-warning btn-sm" type="submit" value="Разместить"><br>
+        </form><br><br>
+        
+    </div>
+</div>
+</div>
+{% endblock %}
