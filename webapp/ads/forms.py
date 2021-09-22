@@ -31,5 +31,4 @@ class UserAd(FlaskForm):
     commission = IntegerField('Комиссия', render_kw={'class': 'form-control'}, validators=[DataRequired()])
     deposit = IntegerField('Залог', render_kw={'class': 'form-control'}, validators=[DataRequired()])
     metro = StringField('Метро', render_kw={'class': 'form-control'}, validators=[DataRequired()])
-    phone = IntegerField('Номер телефона', render_kw={'class': 'form-control'}, validators=[DataRequired()])
     adress = StringField('Адрес', render_kw={'class': 'form-control'}, validators=[DataRequired()])
