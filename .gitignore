@@ -3,5 +3,4 @@ __pycache__
 env
 *.bat
 *.csv
-*.txt
 *.json
