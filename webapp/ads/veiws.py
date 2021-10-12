@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, redirect, url_for,  request
-from webapp.model import Flat
+from flask import Blueprint, render_template, redirect, url_for, request
+from webapp.model import Flat, User, db
 from webapp.ads.forms import FilterForm
 
 blueprint = Blueprint('ads', __name__)
@@ -49,6 +49,7 @@ def result():
     
     flats_count = query.count()
     query = query.paginate(page=page, per_page=25)
+    test = db.session.query(Flat, User).join(User, Flat.user_id == User.id).filter(User.id == 4).first()
     return render_template('index.html', flats=query, form=form, flats_count=flats_count)
 
 

@@ -1,8 +1,9 @@
-from flask import Blueprint, render_template, redirect, url_for, flash
+ # -*- coding: utf-8 -*-
+from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_user, logout_user, current_user, login_required
 from webapp.user.form import LoginForm, RegistrationForm
 from webapp.ads.forms import UserAd
-from webapp.model import db, User
+from webapp.model import db, User, Flat
 
 
 blueprint = Blueprint('user', __name__)
@@ -48,7 +49,7 @@ def registration():
 def process_registration():
     form = RegistrationForm()
     if form.validate_on_submit():
-        new_user = User(username=form.username.data, email=form.email.data, role='user')
+        new_user = User(username=form.username.data, email=form.email.data, role='user', phone_number=form.phone_number.data)
         new_user.set_password(form.password.data)
         db.session.add(new_user)
         db.session.commit()
@@ -67,4 +68,19 @@ def user():
 
 @blueprint.route('/process_add', methods=["POST"])
 def process_add():
-    return 'ok'
+    form = UserAd(request.form)
+    if form.validate_on_submit():
+        new_ad = Flat(user_id=User.query.filter(User.username == current_user.username).first().id,
+                      num_rooms=form.rooms.data,
+                      price=form.price.data,
+                      area=form.area.data,
+                      material=form.material.data,
+                      metro=form.metro.data,
+                      street=form.adress.data,
+                      commission=form.commission.data,
+                      deposit=form.deposit.data,
+                      )
+        db.session.add(new_ad)
+        db.session.commit()
+    flash('Объявление размещено!')
+    return redirect(url_for('ads.index'))
