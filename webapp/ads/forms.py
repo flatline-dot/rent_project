@@ -19,6 +19,8 @@ class FilterForm(FlaskForm):
     material = MultiCheckboxField('material', choices=type_material, coerce=str)
     commission = BooleanField('Без коммиссии')
     deposit = BooleanField('Без залога')
+    user_ads = BooleanField('Объявления пользователей')
+    metro = SelectMultipleField(choices=[("Селигерская", "Селигерская"), ("Сокол", "Сокол"), ("Китай-город", "Китай-город")])
 
 
 class UserAd(FlaskForm):
