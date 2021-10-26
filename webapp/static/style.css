@@ -1,0 +1,77 @@
+.filter-container {
+    width: 65%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 45px;
+    border-radius: 15px;
+    padding-top:35px;
+    padding-bottom: 30px;
+    box-shadow: 0 0  15px rgba(0,0,0,0.5);
+    font-family: sans-serif;
+    font-size: 15px;
+}
+
+.navbar {
+    font-family: sans-serif;
+    font-size: 15px;
+    font-weight: bolder;
+
+}
+
+.container-sm {
+    font-family:sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.header {
+    margin-left: 230px;
+    font-family: sans-serif;
+}
+
+.col-4 {
+    padding-left: 2px;
+    padding-right: 5px;
+
+}
+
+.container-login {
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: sans-serif;
+}
+
+.container-reg {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: sans-serif;
+}
+
+.container-newad {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: sans-serif;
+}
+
+.container-pag {
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: center;
+}
+
+.col-8 {
+    padding-left: 0px;
+}

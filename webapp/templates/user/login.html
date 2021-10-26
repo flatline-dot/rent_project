@@ -2,6 +2,12 @@
 {% block content %}
 <div class="container">
     <div class='col-4'>
+        
+    </div>
+</div>
+<div class="container-login">
+    
+    <div class='col-4'>
         {% with messages = get_flashed_messages() %}
             {% if messages %}
             <div class="alert alert-warning" role="alert">
@@ -11,11 +17,7 @@
             </div>
             {% endif %}
             {% endwith %}
-    </div>
-</div>
-<div class="container">
-    <h3>Авторизация</h3>
-    <div class='col-4'>
+        <h3>Авторизация</h3><br>
         <form action={{ url_for('user.process_login') }} method="POST">
             {{ form.hidden_tag() }}
             {{ form.username.label }}<br>
@@ -23,12 +25,16 @@
 
             {{ form.password.label }}<br>
             {{ form.password() }}<br>
-            {{ form.submit() }}       <a href={{ url_for('user.registration') }}>New user?</a><br><br>
-            
+            <a href={{ url_for('user.registration') }}>Новый пользователь?</a><br><br>
             <div class="form-check">
                 {{ form.remember_me() }}
                 {{ form.remember_me.label }}
-            </div>
+            </div><br>
+            
+            <div class="d-grid gap-2 col-4 mx-auto">
+                {{ form.submit(class="btn btn-primary ") }}<br><br>
+              </div>
+            
             
         </form>
         

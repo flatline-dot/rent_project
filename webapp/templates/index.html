@@ -1,118 +1,107 @@
 {% extends 'base.html' %}
-{% block content %}>
-<div class="container">
-  <ul class="nav justify-content-end">
-    
-    {% if current_user.is_authenticated %}
-    <li class="nav-item">
-      <div class="nav-link disabled">Привет, {{ current_user.username }}!</div>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link active" aria-current="page" href={{ url_for('user.user') }}>Разместить объявление</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link active" aria-current="page" href={{ url_for('user.logout') }}>Выйти</a>
-    </li>
-    
-    {% else %}
-    <li class="nav-item">
-      <a class="nav-link active" aria-current="page" href={{ url_for('user.user') }}>Разместить объявление</a>
-    </li>
-    <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href={{ url_for('user.login') }}>Войти</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link active" aria-current="page" href={{ url_for('user.registration') }}>Регистрация</a>
-    </li>
-    {% endif %}
-  </ul>
-</div>
+{% block content %}
 
-
-
-
-
-
-<div class="container-sm">
-  <div class='col-10 justify-content-center'>
-    <h4>Аренда квартир в Москве</h4><br>
-    <div class="container-sm">
-      <div class='col-4'>
-        {% with messages = get_flashed_messages() %}
-          {% if messages %}
-          <div class="alert alert-warning" role="alert">
-              {% for message in messages %}
-                  {{ message }}<br>
-              {% endfor %}
-          </div>
+<nav class="navbar navbar-expand-lg navbar-light" >
+    <div class="container-fluid justify-content-end">
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          {% if current_user.is_authenticated %}
+          <li class="nav-item">
+            <div class="nav-link disabled">Привет, {{ current_user.username }}!</div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href={{ url_for('user.user') }}>Добавить объявление</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href={{ url_for('user.logout') }}>Выйти</a>
+          </li>
+          
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href={{ url_for('user.user') }}>Добавить объявление</a>
+          </li>
+          <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href={{ url_for('user.login') }}>Войти</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href={{ url_for('user.registration') }}>Регистрация</a>
+          </li>
           {% endif %}
-        {% endwith %}
+        </div>
       </div>
     </div>
-    <div class="h-100 p-5 bg-light border rounded-3">
-      <form action="{{ url_for('ads.result') }}" method="POST">
-        <div class='row justify-content-center'>
-          <div class='col-4'>
-            <div class="input-group input-group-sm mb-3">
-              <span class="input-group-text">Цена</span>
-              {{ form.hidden_tag() }}
-              {{ form.price_min(type='number', placeholder="От") }}
-              {{ form.price_max(type='number', placeholder="До") }}
-            </div>
-            
-            <h7>Количество комнат:</h7><br><br>
-            {% for i in form.rooms %}
-            <div class="form-check form-check-inline">
-              {{ i(class="form-check-input") }}{{ i.label(class="form-check-label") }}
-            </div>
-            {% endfor %}<br><br>
-            {{ form.commission(class="form-check-input") }} {{ form.commission.label }}<br>
-            {{ form.deposit(class="form-check-input") }} {{ form.deposit.label }}<br><br>
-            <input class="btn btn-warning btn-sm" type="submit" value="Поиск">
-            
-          </div>
-          
-          <div class='col-4'>
-            <div class="input-group input-group-sm mb-3">
-              <span class="input-group-text">Площаль</span>
-                {{ form.area_min(type='number', placeholder="От")}}
-                {{ form.area_max(type='number', placeholder="До") }}
-            </div>
-            <h7>Тип дома:</h7><br><br>
-            {% for i in form.material %}
-            <div class="form-check form-check-inline">
-              {{ i(class="form-check-input") }}
-              {{ i.label }}<br>
-            </div>
-            {% endfor %}<br>
-          
-            
-          </form><br><br><br>
-            <form action="{{ url_for('ads.reset') }}" method="POST">
-              <input class="btn btn-warning btn-sm" type="submit" value="Сбросить все" {% if url_for(request.endpoint)  != '/result' %} disabled {% endif %}><br>
-            </form>
-          </div>
-        </div><br>
+</nav>
+
+<div class="header">
+  <h4>Аренда квартир в Москве</h4>
+</div>
+
+<div class="filter-container">
+  <form action="{{ url_for('ads.result') }}" method="POST">
+    <div class='row justify-content-center'>
+      <div class='col-4'>
+        <div class="input-group input-group-sm mb-3" >
+          <span class="input-group-text">Цена</span>
+          {{ form.hidden_tag() }}
+          {{ form.price_min(type='number', placeholder="От") }}
+          {{ form.price_max(type='number', placeholder="До") }}
+        </div>
+        <h7>Количество комнат:</h7><br><br>
+        {% for i in form.rooms %}
+        <div class="form-check form-check-inline">
+          {{ i(class="form-check-input") }}{{ i.label(class="form-check-label") }}
+        </div>
+        {% endfor %}<br><br>
+        {{ form.commission(class="form-check-input") }} {{ form.commission.label }}<br>
+        {{ form.deposit(class="form-check-input") }} {{ form.deposit.label }}<br><br>
+        {{ form.user_ads(class="form-check-input") }} {{ form.user_ads.label }}<br><br><br><br><br>
+        <input class="btn btn-warning btn-sm" type="submit" value="Поиск" width="15px">
         
+      </div>
       
-      
+      <div class='col-4'>
+        <div class="input-group input-group-sm mb-3">
+          <span class="input-group-text">Площаль</span>
+            {{ form.area_min(type='number', placeholder="От")}}
+            {{ form.area_max(type='number', placeholder="До") }}
+        </div>
+        <h7>Тип дома:</h7><br><br>
+        {% for i in form.material %}
+        <div class="form-check form-check-inline">
+          {{ i(class="form-check-input") }}
+          {{ i.label }}<br>
+        </div>
+        {% endfor %}<br><br>
+        <div>
+          <span>Метро:</span><br><br>
+          {{ form.metro(class="form-select") }}
+        </div>
+        
     </div>
   </div>
-</div><br><br>
+  </form><br>
+  <form action="{{ url_for('ads.reset') }}" method="POST">
+    <div class='row justify-content-center'>
+      <div class='col-8'>
+          <input class="btn btn-warning btn-sm" type="submit" value="Сбросить все" {% if url_for(request.endpoint)  != '/result' %} disabled {% endif %}>
+      </div>
+    </div>
+</form> 
+</div><br><br><br><br>
 
 
 <div class="container-sm">
   <div class="col-8">
     <h6>Предложений: {{ flats_count }}</h6><br>
     {% for flat in flats.items %}
-      <div class="h-100 p-5 bg-light border rounded-3">
+      <div class="h-100 p-5  border rounded-3">
         <div class="container-sm">
           <div class="row">
             <div class="col">
               {% if flat.num_rooms == 0%}
-              <h6>Квартира-студия, {{ flat.area}} м²</h6><br>
+              <h7>Квартира-студия, {{ flat.area}} м²</h7><br><br>
               {% else %}
-              <h6>{{ flat.num_rooms }}-комнатная квартира, {{ flat.area}} м²</h6><br>
+              <h7>{{ flat.num_rooms }}-комнатная квартира, {{ flat.area}} м²</h7><br><br>
               {% endif %}
               <h7>{{ flat.street }}</h7><br>
               <h7>м. {{ flat.metro }}</h7>
@@ -142,26 +131,29 @@
         </div>
       </div><br>
     {% endfor %}<br>
-    <nav aria-label="...">
-      <ul class="pagination">
-        <li class="page-item {% if not flats.has_prev %} disabled {% endif %}">
-          <a class="page-link" href="http://127.0.0.1:5000/{{ url_for(request.endpoint) }}?page={{ flats.prev_num }}">Назад</a>
-        </li>
     
-        {% for flat in flats.iter_pages() %}
-          {% if flat %}
-            <li class="page-item {% if flat == flats.page %} active {% endif %}">
-              <a class="page-link" href="http://127.0.0.1:5000/{{ url_for(request.endpoint) }}?page={{ flat }}">{{ flat }}</a>
-            </li>
-          {% endif %}
-        {% endfor %}
-        
-        <li class="page-item {% if not flats.has_next %} disabled {% endif %}">
-          <a class="page-link" href="http://127.0.0.1:5000/{{ url_for(request.endpoint) }}?page={{ flats.next_num }}">Вперед</a>
-        </li>
-      </ul>
-    </nav><br>
   </div>
 </div>
 
+<div class="container-pag">
+  <nav aria-label="...">
+    <ul class="pagination">
+      <li class="page-item {% if not flats.has_prev %} disabled {% endif %}">
+        <a class="page-link" href="http://127.0.0.1:5000/{{ url_for(request.endpoint) }}?page={{ flats.prev_num }}">Назад</a>
+      </li>
+
+      {% for flat in flats.iter_pages() %}
+        {% if flat %}
+          <li class="page-item {% if flat == flats.page %} active {% endif %}">
+            <a class="page-link" href="http://127.0.0.1:5000/{{ url_for(request.endpoint) }}?page={{ flat }}">{{ flat }}</a>
+          </li>
+        {% endif %}
+      {% endfor %}
+      
+      <li class="page-item {% if not flats.has_next %} disabled {% endif %}">
+        <a class="page-link" href="http://127.0.0.1:5000/{{ url_for(request.endpoint) }}?page={{ flats.next_num }}">Вперед</a>
+      </li>
+    </ul>
+  </nav><br>
+</div><br>
 {% endblock %}

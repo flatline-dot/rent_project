@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container-sm">
+<div class="container-newad">
     <h4></h4><br>
-    <h4>О квартире</h4><br>
-    <div class='row'>
+    
+ 
     <div class='col-4'>
+        <h3>О квартире</h3><br>
         <form action={{ url_for('user.process_add') }} method="POST">
             {{ form.hidden_tag() }}
             {% for i in form.rooms %}
@@ -46,10 +47,14 @@
                {{ form.deposit() }}
                <span class="input-group-text">₽</span>
             </div><br>
-             <input class="btn btn-warning btn-sm" type="submit" value="Разместить"><br>
+             
+             <div class="d-grid gap-2 col-4 mx-auto">
+                <input class="btn btn-primary btn-sm" type="submit" value="Разместить"><br>
+              </div>
+            
         </form><br><br>
         
     </div>
-</div>
+
 </div>
 {% endblock %}
