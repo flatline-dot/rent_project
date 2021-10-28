@@ -46,10 +46,11 @@ def result():
             query = query.filter(Flat.commission == 0)
         if form.deposit.data:
             query = query.filter(Flat.deposit == 0)
+        if form.user_ads.data:
+            query = query.join(Flat.user)
     
     flats_count = query.count()
     query = query.paginate(page=page, per_page=25)
-    test = db.session.query(Flat, User).join(User, Flat.user_id == User.id).filter(User.id == 4).first()
     return render_template('index.html', flats=query, form=form, flats_count=flats_count)
 
 
