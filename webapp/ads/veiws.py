@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, request
-from webapp.model import Flat, User, db
+from webapp.model import Flat
 from webapp.ads.forms import FilterForm
 
 blueprint = Blueprint('ads', __name__)
@@ -29,8 +29,9 @@ def result():
         page = 1
     url = 'result'
     if request.method == "POST":
+        if form.user_ads.data:
+            query = query.join(Flat.user)
         if form.price_min.data:
-            print(form.price_min.data)
             query = query.filter(Flat.price >= form.price_min.data)
         if form.price_max.data:
             query = query.filter(Flat.price <= form.price_max.data)
@@ -46,9 +47,10 @@ def result():
             query = query.filter(Flat.commission == 0)
         if form.deposit.data:
             query = query.filter(Flat.deposit == 0)
-        if form.user_ads.data:
-            query = query.join(Flat.user)
-    
+        if form.metro.data:
+            query = query.filter(Flat.metro.in_(form.metro.data))
+            print(query)
+
     flats_count = query.count()
     query = query.paginate(page=page, per_page=25)
     return render_template('index.html', flats=query, form=form, flats_count=flats_count)

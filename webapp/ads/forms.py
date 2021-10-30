@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import IntegerField, StringField, SelectMultipleField, widgets, BooleanField, RadioField
 from wtforms.validators import DataRequired, InputRequired
+from .read_metro_list import metro
 
 
 class MultiCheckboxField(SelectMultipleField):
@@ -20,7 +21,7 @@ class FilterForm(FlaskForm):
     commission = BooleanField('Без коммиссии')
     deposit = BooleanField('Без залога')
     user_ads = BooleanField('Объявления пользователей')
-    metro = SelectMultipleField(choices=[("Селигерская", "Селигерская"), ("Сокол", "Сокол"), ("Китай-город", "Китай-город")])
+    metro = SelectMultipleField(choices=metro)
 
 
 class UserAd(FlaskForm):
