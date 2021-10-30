@@ -22,14 +22,13 @@ class Flat(db.Model):
     floor = db.Column(db.Integer)
     link = db.Column(db.String, unique=True)
     area = db.Column(db.Integer)
-    material = db.Column(db.Integer)
+    material = db.Column(db.String)
     metro = db.Column(db.String)
     district = db.Column(db.String)
     street = db.Column(db.String)
     price = db.Column(db.Integer)
     commission = db.Column(db.Integer)
     deposit = db.Column(db.Integer)
-
     user = relationship('User')
 
     def __repr__(self):
@@ -41,9 +40,9 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String, unique=True)
     password = db.Column(db.String)
     email = db.Column(db.String)
-    phone_number = db.Column(db.Integer)
+    phone_number = db.Column(db.String)
     role = db.Column(db.String)
-
+    
     flat = relationship('Flat')
 
     def __repr__(self):

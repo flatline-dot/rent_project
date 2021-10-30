@@ -117,12 +117,16 @@
                 <h7>Без комиссии</h7><br>
               {% else %}
                 <h7>Комиссия {{ flat.commission }} %</h7><br>
-              {% endif %}
-              <h1></h1>
+              {% endif %}<br>
+              
               {% if flat.user.username %}
+                <h7>Пользователь:</h7>
                 {{ flat.user.username }}<br>
-                {{ flat.user.phone_number }}
-                <a button type="button"  class="btn btn-warning btn-sm">{{ flat.user.username }} {{ flat.user.phone_number }}</a><br>  
+                <h7>Телефон:</h7>
+                {{ flat.user.phone_number }}<br>
+                <h7>E-mail:</h7><br>
+                {{ flat.user.email }}
+                
               {% else %}
                 <a href={{ flat.link }} button type="button" target="_blank" class="btn btn-warning btn-sm">Перейти к объявлению</a><br>
               {% endif %}
