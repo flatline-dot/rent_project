@@ -14,7 +14,7 @@ def get_link(html):
         if i.get('href'):
             link = 'https://www.domofond.ru' + i.get('href')
             links.append(link)
-    write_links_csv(links, 'domofond_links.csv')
+    write_links_csv(links, 'C:\\Project\\rent_project\\aggregation\\data\\domofond_links.csv')
 
 
 def commission_check(commission):
@@ -64,6 +64,10 @@ def get_data(links, proxy):
             commission = commission_check(href.contents[1].find_next().find_next().text)
             deposit = deposit_check(href.contents[2].find_next().find_next().text)
             num_rooms = href.contents[3].find_next().find_next().text
+            if num_rooms.isdigit():
+                num_rooms = num_rooms
+            else:
+                num_rooms = '0'
             floor = href.contents[4].find_next().find_next().text.split('/')[0]
             area = href.contents[5].find_next().find_next().text.split()[0]
             price = href.contents[8].find_next().find_next().text.replace(' ', '').replace('₽', '')
@@ -85,7 +89,7 @@ def get_data(links, proxy):
                     'link': link
                     }
             if data['material']:
-                write_data_csv(data, 'domofond.csv')
+                write_data_csv(data, 'C:\\Project\\rent_project\\aggregation\\data\\domofond.csv')
                 print('Страница', links.index(link) + 1, 'Успешно!')
         except Exception as err:
             print(err, f'on {link}', f'Страница {links.index(link) + 1}', 'STR', traceback.format_exc())
@@ -93,8 +97,8 @@ def get_data(links, proxy):
 
 def main():
     proxy = read_proxies()
-    #all_links(proxy, 80, f'https://www.domofond.ru/arenda-kvartiry-moskva-c3584?RentalRate=Month&PublicationTimeRange=OneWeek&Page=', get_link)
-    links = read_links_csv('domofond_links.csv')
+    all_links(proxy, 3, f'https://www.domofond.ru/arenda-kvartiry-moskva-c3584?RentalRate=Month&PublicationTimeRange=OneWeek&Page=', get_link)
+    links = read_links_csv('C:\\Project\\rent_project\\aggregation\\data\\domofond_links.csv')
     get_data(links, proxy)
 
 
