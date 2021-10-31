@@ -14,7 +14,7 @@ def read_csv(fieldname):
                   'link'
                   ]
         reader = csv.DictReader(f, fields, delimiter=';')
-        data = [] 
+        data = []
         for row in reader:
             data.append(row)
         print(data)
@@ -25,17 +25,17 @@ def data_save_db(csv_data):
     for row in csv_data:
         try:
             flat = Flat(
-                num_rooms = int(row['num_rooms']),
-                floor = int(row['floor']),
-                link = row['link'],
-                area = int(row['area']), 
-                material = row['material'],
-                metro = row['metro'],
-                district = row['district'],
-                street = row['street'],
-                price = int(row['price']),
-                commission = int(row['commission']),
-                deposit = int(row['deposit'])
+                num_rooms=int(row['num_rooms']),
+                floor=int(row['floor']),
+                link=row['link'],
+                area=int(row['area']),
+                material=row['material'],
+                metro=row['metro'],
+                district=row['district'],
+                street=row['street'],
+                price=int(row['price']),
+                commission=int(row['commission']),
+                deposit=int(row['deposit'])
             )
             db.session.add(flat)
             db.session.commit()
@@ -43,10 +43,13 @@ def data_save_db(csv_data):
             db.session.rollback()
             print(err)
 
-def main(file):
+
+def main():
     app = create_app()
     with app.app_context():
-        data_save_db(read_csv(file))
+        data_save_db(read_csv('C:\\Project\\rent_project\\aggregation\\data\\domofond.csv'))
+        data_save_db(read_csv('C:\\Project\\rent_project\\aggregation\\data\\cian.csv'))
 
-if __name__=='__main__':
+
+if __name__ == '__main__':
     main()
