@@ -1,4 +1,12 @@
 import csv
+import sys
+import os
+
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+direct = os.path.join(basedir, '..')
+sys.path.append(direct)
+
 
 from webapp.model import db, Flat
 from webapp import create_app
@@ -47,8 +55,8 @@ def data_save_db(csv_data):
 def main():
     app = create_app()
     with app.app_context():
-        data_save_db(read_csv('C:\\Project\\rent_project\\aggregation\\data\\domofond.csv'))
-        data_save_db(read_csv('C:\\Project\\rent_project\\aggregation\\data\\cian.csv'))
+        data_save_db(read_csv(os.path.join(basedir, 'data', 'domofond.csv')))
+        data_save_db(read_csv(os.path.join(basedir, 'data', 'avito.csv')))
 
 
 if __name__ == '__main__':
