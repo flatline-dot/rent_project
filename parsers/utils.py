@@ -53,12 +53,11 @@ def read_proxies():
 
 
 def all_links(proxy, num_pages, url, get_link):                        # get ads links and write on csv
-    for page in range(num_pages):
+    for page in range(1, num_pages):
         link = url + str(page)
-        print(link)
         try:
             html = get_html(link, proxy)
             get_link(html)
-            print('Страница', page)
+            print(link)
         except Exception as err:
             print(err, url)

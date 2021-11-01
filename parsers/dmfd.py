@@ -1,8 +1,13 @@
 import re
 import traceback
+import os
 
 from bs4 import BeautifulSoup
 from utils import read_links_csv, write_links_csv, read_proxies, all_links, get_html, write_data_csv
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+direct_links = os.path.join(basedir, 'data', 'domofond_links.csv')
+direct_data = os.path.join(basedir, 'data', 'domofond.csv')
 
 
 def get_link(html):
@@ -14,7 +19,7 @@ def get_link(html):
         if i.get('href'):
             link = 'https://www.domofond.ru' + i.get('href')
             links.append(link)
-    write_links_csv(links, 'C:\\Project\\rent_project\\aggregation\\data\\domofond_links.csv')
+    write_links_csv(links, direct_links)
 
 
 def commission_check(commission):
@@ -89,7 +94,7 @@ def get_data(links, proxy):
                     'link': link
                     }
             if data['material']:
-                write_data_csv(data, 'C:\\Project\\rent_project\\aggregation\\data\\domofond.csv')
+                write_data_csv(data, direct_data)
                 print('Страница', links.index(link) + 1, 'Успешно!')
         except Exception as err:
             print(err, f'on {link}', f'Страница {links.index(link) + 1}', 'STR', traceback.format_exc())
@@ -98,7 +103,7 @@ def get_data(links, proxy):
 def main():
     proxy = read_proxies()
     all_links(proxy, 3, f'https://www.domofond.ru/arenda-kvartiry-moskva-c3584?RentalRate=Month&PublicationTimeRange=OneWeek&Page=', get_link)
-    links = read_links_csv('C:\\Project\\rent_project\\aggregation\\data\\domofond_links.csv')
+    links = read_links_csv(direct_links)
     get_data(links, proxy)
 
 

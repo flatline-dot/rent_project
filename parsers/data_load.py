@@ -25,7 +25,6 @@ def read_csv(fieldname):
         data = []
         for row in reader:
             data.append(row)
-        print(data)
         return data[1:]  # возвращ. список, где каждый элем. это строка с ключ-значен.из fields
 
 

@@ -1,6 +1,12 @@
+import traceback
+import os
+
 from utils import get_html, read_proxies, write_links_csv, read_links_csv, write_data_csv, all_links
 from bs4 import BeautifulSoup
-import traceback
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+direct_links = os.path.join(basedir, 'data', 'avito_links.csv')
+direct_data = os.path.join(basedir, 'data', 'avito.csv')
 
 
 def get_link(html):
@@ -10,7 +16,7 @@ def get_link(html):
     for element in data:
         link = 'https://www.avito.ru/' + element.find('a', class_='iva-item-sliderLink-bJ9Pv').get('href')
         links.append(link)
-    write_links_csv(links, 'C:\\Project\\rent_project\\aggregation\\data\\avito_links.csv')
+    write_links_csv(links, direct_links)
 
 
 def get_data(links, proxy):
@@ -76,7 +82,7 @@ def get_data(links, proxy):
                     'street': street,
                     'link': link
                     }
-            write_data_csv(data, 'C:\\Project\\rent_project\\aggregation\\data\\avito.csv')
+            write_data_csv(data, direct_data)
             print('Страница', links.index(link) + 1, 'Успешно!')
         except Exception as err:
             print(err, f'on {link}', f'Страница {links.index(link) + 1}', 'STR', traceback.format_exc())
@@ -87,7 +93,7 @@ def get_data(links, proxy):
 def main():
     proxy = read_proxies()
     all_links(proxy, 3, f'https://www.avito.ru/moskva/kvartiry/sdam/na_dlitelnyy_srok-ASgBAgICAkSSA8gQ8AeQUg?p=', get_link)
-    links = read_links_csv('C:\\Project\\rent_project\\aggregation\\data\\avito_links.csv')
+    links = read_links_csv(direct_links)
     get_data(links, proxy)
 
 
