@@ -7,6 +7,13 @@ import requests
 from random import choice, random, randint
 
 
+def limit_request(func):
+    def wrapper(*args, **kwargs):
+        time.sleep(randint(1, 5))
+        return func(*args, **kwargs)
+    return wrapper
+
+
 def write_links_csv(links, file_name):
     with open(file_name, 'a', newline='') as f:
         writer = csv.writer(f)
@@ -31,9 +38,9 @@ def write_data_csv(data, file):
         writer.writerow(data)
 
 
+@limit_request
 def get_html(link, proxies):
     try:
-        time.sleep(randint(1, 10))
         ua = UserAgent()
         headers = {'UserAgent': ua.random}
         proxy = {'http': 'http://' + choice(proxies)}

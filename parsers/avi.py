@@ -87,12 +87,11 @@ def get_data(links, proxy):
         except Exception as err:
             print(err, f'on {link}', f'Страница {links.index(link) + 1}', 'STR', traceback.format_exc())
 
-    print(data)
 
 
-def main():
+def main(num_pages):
     proxy = read_proxies()
-    all_links(proxy, 3, f'https://www.avito.ru/moskva/kvartiry/sdam/na_dlitelnyy_srok-ASgBAgICAkSSA8gQ8AeQUg?p=', get_link)
+    all_links(proxy, num_pages, f'https://www.avito.ru/moskva/kvartiry/sdam/na_dlitelnyy_srok-ASgBAgICAkSSA8gQ8AeQUg?p=', get_link)
     links = read_links_csv(direct_links)
     get_data(links, proxy)
 

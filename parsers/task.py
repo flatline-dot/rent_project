@@ -7,7 +7,7 @@ celery_app = Celery('task', broker='redis://localhost:6379/0')
 
 
 @celery_app.task
-def add():
-    dmfd()
-    avi()
+def add(num_pages):
+    dmfd(num_pages)
+    avi(num_pages)
     data_load()

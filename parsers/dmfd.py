@@ -100,9 +100,9 @@ def get_data(links, proxy):
             print(err, f'on {link}', f'Страница {links.index(link) + 1}', 'STR', traceback.format_exc())
 
 
-def main():
+def main(num_pages):
     proxy = read_proxies()
-    all_links(proxy, 3, f'https://www.domofond.ru/arenda-kvartiry-moskva-c3584?RentalRate=Month&PublicationTimeRange=OneWeek&Page=', get_link)
+    all_links(proxy, num_pages, f'https://www.domofond.ru/arenda-kvartiry-moskva-c3584?RentalRate=Month&PublicationTimeRange=OneWeek&Page=', get_link)
     links = read_links_csv(direct_links)
     get_data(links, proxy)
 
