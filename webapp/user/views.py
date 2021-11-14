@@ -49,6 +49,12 @@ def registration():
 def process_registration():
     form = RegistrationForm()
     if form.validate_on_submit():
+        check_username = User.query.filter(User.username == form.username.data).first()
+        check_email = User.query.filter(User.email == form.email.data).first()
+        check_phonenumber = User.query.filter(User.phone_number == form.phone_number.data).first()
+        if check_username or check_email or check_phonenumber:
+            flash('Пользователь с такими данными уже есть!')
+            return redirect(url_for('user.registration'))
         new_user = User(username=form.username.data, email=form.email.data, role='user', phone_number=form.phone_number.data)
         new_user.set_password(form.password.data)
         db.session.add(new_user)

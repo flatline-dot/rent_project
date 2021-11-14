@@ -7,15 +7,6 @@ db = SQLAlchemy()
 
 
 class Flat(db.Model):
-
-    BRICK, MONOLITE, PANEL = range(1, 4)
-
-    MATERIALS_NAMES = {
-        BRICK: 'Кирпич',
-        MONOLITE: 'Монолит',
-        PANEL: 'Панель',
-    }
-
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     num_rooms = db.Column(db.Integer)
@@ -42,7 +33,6 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String)
     phone_number = db.Column(db.String)
     role = db.Column(db.String)
-    
     flat = relationship('Flat')
 
     def __repr__(self):

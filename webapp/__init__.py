@@ -1,9 +1,10 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from webapp.model import db, User
 from webapp.ads.veiws import blueprint as ads_blueprint
 from webapp.user.views import blueprint as user_blueprint
+
 
 
 def create_app():
@@ -20,4 +21,9 @@ def create_app():
     @login_manager.user_loader
     def user_load(user_id):
         return User.query.get(user_id)
+
+    @app.errorhandler(404)
+    def not_found_error(error):
+        return render_template('errors.html'), 404
+
     return app

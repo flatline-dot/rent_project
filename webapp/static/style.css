@@ -75,3 +75,10 @@
 .col-8 {
     padding-left: 0px;
 }
+
+.conteiner_errors {
+    font-family: sans-serif;
+    margin-top: 20px;
+    margin-left: 15px;
+    
+}
