@@ -88,7 +88,6 @@ def get_data(links, proxy):
             print(err, f'on {link}', f'Страница {links.index(link) + 1}', 'STR', traceback.format_exc())
 
 
-
 def main(num_pages):
     proxy = read_proxies()
     all_links(proxy, num_pages, f'https://www.avito.ru/moskva/kvartiry/sdam/na_dlitelnyy_srok-ASgBAgICAkSSA8gQ8AeQUg?p=', get_link)

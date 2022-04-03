@@ -5,7 +5,7 @@
     
  
     <div class='col-4'>
-        <h3>О квартире</h3><br>
+        <h3>Новое объявление</h3><br>
         <form action={{ url_for('user.process_add') }} method="POST">
             {{ form.hidden_tag() }}
             {% for i in form.rooms %}

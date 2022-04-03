@@ -2,14 +2,13 @@ import csv
 import sys
 import os
 
+from webapp.model import db, Flat
+from webapp import create_app
+
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 direct = os.path.join(basedir, '..')
 sys.path.append(direct)
-
-
-from webapp.model import db, Flat
-from webapp import create_app
 
 
 def read_csv(fieldname):

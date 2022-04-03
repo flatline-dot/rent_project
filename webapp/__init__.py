@@ -6,7 +6,6 @@ from webapp.ads.veiws import blueprint as ads_blueprint
 from webapp.user.views import blueprint as user_blueprint
 
 
-
 def create_app():
     app = Flask(__name__)
     app.config.from_pyfile('config.py')
